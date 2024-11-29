@@ -1,19 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const { handleData } = require("../middleWare/middlewareDataRtr");
 
-let dataObjects = [];
-
-router.post("/getData", (req, res) => {
+router.post("/getData", handleData, (req, res) => {
     const newData = req.body;
-
-    if (newData) {
-        const dataObject = { ...newData };
-        dataObjects.push(dataObject);
-
-        res.status(200).json({ message: "Data received and converted successfully", data: dataObject });
-    } else {
-        res.status(400).json({ message: "No data received" });
-    }
+    res.status(200).json({ message: "Data received and updated successfully", data: newData });
 });
 
 module.exports = router;
