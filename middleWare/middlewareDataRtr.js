@@ -64,7 +64,39 @@ function moveToAvg(existingData){
     });
     existingData.counter = 0;
     console.log(`Data for ID ${existingData.id} moved to avg and reset.`);
+    pushToDb(avg);
 }
+function pushToDb(avg) {
+    console.log("Data pushed to DB");
+
+    avg.forEach((data) => {
+        data.positions.forEach((position) => {
+            const sql = `
+                INSERT INTO environmental_data_avg (
+                    device_id, uv_radiation, soil_humidity, light, air_temperature, air_humidity, measurement_date
+                ) VALUES (?, ?, ?, ?, ?, ?, NOW())
+            `;
+
+            const values = [
+                data.id,
+                position.UV_radiation,
+                position.soilMoisture,
+                position.lightIntensity,
+                position.temperature,
+                position.humidity
+            ];
+
+            db_pool.query(sql, values, (err, result) => {
+                if (err) {
+                    console.error("Error inserting data into DB:", err);
+                } else {
+                    console.log(`Data for ID ${data.id} inserted successfully.`);
+                }
+            });
+        });
+    });
+}
+
 
 module.exports = {
     handleData,
