@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { avg } = require("../middleWare/middlewareDataRtr");
-
+const processData = require("../middleWare/middleWarwReadData");
 
 router.get("/", (req, res) => {
-    res.json(avg);
+    const result = processData();
+    res.json(result);
 });
 
 module.exports = router;

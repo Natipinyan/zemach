@@ -68,5 +68,6 @@ function moveToAvg(existingData){
 
 module.exports = {
     handleData,
+    dataObjects,
     avg
 };
