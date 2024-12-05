@@ -10,7 +10,7 @@ console.log("database.PASSWORD=",PASSWORD);
 console.log("database.DATABASE=",DATABASE);
 
 
-const pool = mysql.createPool({
+let pool = mysql.createPool({
     host:		HOST		,
     user:		USER		,
     password:	PASSWORD	,

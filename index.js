@@ -14,6 +14,10 @@ app.set("views", __dirname + '/views');
 
 global.router = express.Router();
 
+var db_M = require('./database');
+global.db_pool = db_M.pool;
+
+
 const port = 6060;
 app.set("view engine", "ejs");
 
