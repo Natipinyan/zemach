@@ -23,6 +23,9 @@ app.use('/main', main_rtr);
 const dataRouter = require("./routers/dataRouter");
 app.use("/data", dataRouter);
 
+const dataReadRouter = require("./routers/dataReadRouter");
+app.use("/readData", dataReadRouter);
+
 app.listen(port, () => {
     console.log(`Now listening to port http://localhost:${port}/main`);
 });

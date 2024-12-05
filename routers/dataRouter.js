@@ -7,4 +7,5 @@ router.post("/getData", handleData, (req, res) => {
     res.status(200).json({ message: "Data received and updated successfully", data: newData });
 });
 
+
 module.exports = router;
