@@ -66,19 +66,30 @@ function moveToAvg(existingData){
     console.log(`Data for ID ${existingData.id} moved to avg and reset.`);
     pushToDb(avg);
 }
-function pushToDb(avg) {
-    console.log("Data pushed to DB");
+
+async function pushToDb(avg) {
+
+    let deviceList = await processDevices();
 
     avg.forEach((data) => {
+
+        let matchingDevice = deviceList.find(item => item.device_id === data.id);
+        let plants = [matchingDevice.plant_id_1, matchingDevice.plant_id_2, matchingDevice.plant_id_3];
+        console.log(plants);
+        let plantCounter = 0;
+
         data.positions.forEach((position) => {
+        const plantID = plants[plantCounter++];
+
             const sql = `
                 INSERT INTO environmental_data_avg (
-                    device_id, uv_radiation, soil_humidity, light, air_temperature, air_humidity, measurement_date
-                ) VALUES (?, ?, ?, ?, ?, ?, NOW())
+                    device_id, plant_ID, uv_radiation, soil_humidity, light, air_temperature, air_humidity, measurement_date
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
             `;
 
             const values = [
                 data.id,
+                plantID,
                 position.UV_radiation,
                 position.soilMoisture,
                 position.lightIntensity,
@@ -90,13 +101,28 @@ function pushToDb(avg) {
                 if (err) {
                     console.error("Error inserting data into DB:", err);
                 } else {
-                    console.log(`Data for ID ${data.id} inserted successfully.`);
+                    console.log(`Data for ID ${data.id} inserted successfully. Plant ID: ${plantID}`);
                 }
             });
         });
     });
 }
 
+
+function processDevices() {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM arduino`;
+        db_pool.query(sql, (err, results) => {
+            if (err) {
+                console.error("Error fetching data from arduino:", err);
+                reject(err);
+            } else {
+                console.log("Fetched arduino data:");
+                resolve(results);
+            }
+        });
+    });
+}
 
 module.exports = {
     handleData,
