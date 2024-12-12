@@ -8,4 +8,5 @@ router.post("/getData", handleData, (req, res) => {
 });
 
 
-module.exports = router;
+module.exports = router; 
+
