@@ -123,7 +123,6 @@ async function pushToDb(avg) {
         for (const position of data.positions) {
             const plantID = plants[plantCounter++];
 
-            // הכנס את הערכים בצורה נכונה
             const sql = `
                 INSERT INTO environmental_data_avg (
                     device_id,
@@ -132,6 +131,7 @@ async function pushToDb(avg) {
                     lightIntensity, 
                     temperature,
                     humidity,
+                    measurement_date,
                     soilMoisture,
                     UV_radiation_max, 
                     UV_radiation_min,
@@ -143,7 +143,7 @@ async function pushToDb(avg) {
                     humidity_min,
                     soilMoisture_max, 
                     soilMoisture_min
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?,now(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `;
 
             const values = [

@@ -1,3 +1,5 @@
+process.env.TZ = "Asia/Jerusalem";
+
 global.express = require('express');
 const app = express();
 
